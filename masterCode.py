@@ -62,7 +62,7 @@ all_data_list = []
 
 #!!! PROPER IMPLEMENTATION. THIS EXTRACTS ALL THE JSON FILES AND SAVES IT IN A DICT
 for x in range(1, upper_limit + 1):
-    json_file_path = f'cpadataset{x}.json'
+    json_file_path = f'cpadataset.json'
     try:
         with open(json_file_path, encoding="utf-8") as f:
             data = json.load(f)
@@ -102,7 +102,7 @@ def transformExperience(experience_data, name):
         count += 1
         if "title" in item:
             json_title = item.get("title", "")
-            best_match = process.extractOne(json_title, cleanedJobDescription.job_descriptions, scorer=fuzz.ratio)
+            best_match = process.extractOne(json_title, synonyms.unique_job_titles, scorer=fuzz.ratio)
             
             if best_match and best_match[1] > 60:   # best_match[1] is the similarity score
                 title1 = item["title"]
@@ -360,8 +360,8 @@ def createJobMappings(jobPathList):
       
 #!!! THIS FUNCTION DETERMINES THE SIZE OF THE FINAL CSV FILES
 def getJobs1():
-    return cleanedJobDescription.job_descriptions #!!! The proper 100k size
-    #return synonyms.unique_job_titles #This is the smaller list (1k) to test with
+    #return cleanedJobDescription.job_descriptions #!!! The proper 100k size
+    return synonyms.unique_job_titles #This is the smaller list (1k) to test with
 
 #!!! PROPER IMPLEMENTATION OF OUTPUTING THE CSV FILES
 #The the format of the CSV files are being outputted correctly (100k x 100k)
